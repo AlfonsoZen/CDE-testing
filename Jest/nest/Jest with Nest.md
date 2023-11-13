@@ -70,7 +70,7 @@ npm run test
 ```
 
 Which should print something as follows: 
-![[Pasted image 20231110124126.png]]
+![Alt text](image.png)
 
 ### HTTP Verb Test: 
 Based on the structure of the default unit test, let's provide examples for testing different HTTP verbs.
