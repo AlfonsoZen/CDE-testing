@@ -16,9 +16,10 @@ We are researching their implementation and usage with Jest and Cypress to make 
 
 The repository is organized into separate folders for Jest and Cypress. Each folder contains project examples, documentation, and best practices related to the respective testing tool.
 
-- [Jest](./jest)
-  - [Configuration](./jest/configuration)
-  - [Project Examples](./jest/examples)
+- [Jest](./Jest)
+  - [Nest.js](./Jest/nest)
+  - [Next.js](./Jest/next)
+  - [Remix.js](./Jest/remix)
 
 - [Cypress](./cypress)
   - [Configuration](./cypress/configuration)
