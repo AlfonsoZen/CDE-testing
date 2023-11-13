@@ -1,18 +1,17 @@
-
 # Next.js 
-[Nest.js](https://nextjs.org/) is a React framework for building full-stack web applications. You use React Components to build user interfaces, and Next.js for additional features and optimizations.
+[Next.js](https://nextjs.org/) is a React framework for building full-stack web applications. React Components are used to construct user interfaces, while Next.js provides additional features and optimizations.
 
 ### Prerequisites
-- Node.js 18.17 or later.
-- macOS, Windows (including WSL), and Linux are supported.
+- Node.js (Minimum version: 16)
+- Supported operating systems: macOS, Windows (including WSL), and Linux.
 
 #### Automatic Installation
-To create a project, run:
+To initiate a project, run:
 ```sh
-npx create-next-app@latest
+npx create-next-app my-app
 ```
 
-On installation, you'll see the following prompts:
+During installation, respond to the prompts:
 ```sh
 What is your project named? my-app
 Would you like to use TypeScript? No / Yes
@@ -24,46 +23,72 @@ Would you like to customize the default import alias (@/*)? No / Yes
 What import alias would you like configured? @/*
 ```
 
-After the prompts, `create-next-app` will create a folder with your project name and install the required dependencies.
+After the prompts, create-next-app will create a folder with your project name and install the required dependencies.
 
 #### Running the application
+
 1. Run `npm run dev` to start the development server.
 2. Visit `http://localhost:3000` to view your application.
 3. Edit `app/layout.tsx` (or `pages/index.tsx`) file and save it to see the updated result in your browser.
+
 ## Testing: Implementing Jest
+
 [Jest](https://github.com/facebook/jest) and React Testing Library are frequently used together for **Unit Testing**.
+
+There are 3 different ways of implementing Jest in Next.js:
+1. Quickstart 
+2. Setting up Jest (with the Rust Compiler)
+3. Setting up Jest (with Babel)
+
+In this tutorial, we'll follow the Quickstart as the most straightforward way to work with Jest in Next.js.
+
+> Note: Using the Quickstart allows you to omit the previously mentioned Automatic Installation.
+
 #### Installation
+
 You can use `create-next-app` with the [with-jest](https://github.com/vercel/next.js/tree/canary/examples/with-jest) example to quickly get started with Jest and React Testing Library:
 ```bash
 npx create-next-app@latest --example with-jest with-jest-app
 ```
 
-#### Setting up Jest (with the Rust Compiler)
-Since the release of [Next.js 12](https://nextjs.org/blog/next-12), Next.js now has built-in configuration for Jest.
+#### ### Default Unit Test:
+The boilerplate created should include a unit test that checks if the `<Home />` component successfully renders a heading:
+```js
+/**
+ * @jest-environment jsdom
+ */
+import { render, screen } from '@testing-library/react'
+import Home from '@/pages/index'
 
-To set up Jest, install `jest`, `jest-environment-jsdom`, `@testing-library/react`, `@testing-library/jest-dom`:
-```sh
-npm install --save-dev jest jest-environment-jsdom @testing-library/react @testing-library/jest-dom
-```
+describe('Home', () => {
+  it('renders a heading', () => {
+    render(<Home />)
 
-Create a `jest.config.mjs` file in your project's root directory and add the following:
-```jsx
-import nextJest from 'next/jest.js'
- 
-const createJestConfig = nextJest({
-  // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
-  dir: './',
+    const heading = screen.getByRole('heading', {
+      name: /welcome to next\.js!/i,
+    })
+
+    expect(heading).toBeInTheDocument()
+  })
 })
- 
-// Add any custom config to be passed to Jest
-/** @type {import('jest').Config} */
-const config = {
-  // Add more setup options before each test is run
-  // setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
- 
-  testEnvironment: 'jest-environment-jsdom',
-}
- 
-// createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
-export default createJestConfig(config)
 ```
+
+This test can be executed by running:
+```sh
+npm run test
+```
+
+Which should display something similar to:
+![Alt text](image.png)
+
+Optionally, this example includes a [snapshot test](https://jestjs.io/docs/snapshot-testing) to keep track of any unexpected changes to your `<Home />` component:
+```js
+import { render } from '@testing-library/react'
+import Home from '../pages/index'
+ 
+it('renders homepage unchanged', () => {
+  const { container } = render(<Home />)
+  expect(container).toMatchSnapshot()
+})
+```
+
